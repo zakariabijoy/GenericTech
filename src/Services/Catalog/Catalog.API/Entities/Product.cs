@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace Catalog.API.Entities;
 
-public class Products
+public class Product
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
