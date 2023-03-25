@@ -4,6 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>62568d46-7370-4bef-80ae-ca3b3c8209fd</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +15,8 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.52.0" />
 
 	<PackageReference Include="Dapper" Version="2.0.123" />
+
+	<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
 	<PackageReference Include="Npgsql" Version="7.0.2" />
   </ItemGroup>
 
