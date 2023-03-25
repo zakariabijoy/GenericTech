@@ -81,6 +81,7 @@ services:
 
 
   discount.grpc:
+    container_name: discount.grpc
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
