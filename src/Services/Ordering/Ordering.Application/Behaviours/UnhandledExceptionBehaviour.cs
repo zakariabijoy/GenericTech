@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ordering.Application.Behaviours;
 
-public class UnhandledExceptionnBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
     private readonly ILogger<TRequest> _logger;
 
-    public UnhandledExceptionnBehaviour(ILogger<TRequest> logger)
+    public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
