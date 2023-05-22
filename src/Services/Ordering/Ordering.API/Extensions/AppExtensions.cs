@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SendGrid.Helpers.Mail;
 
 namespace Ordering.API.Extensions;
 
@@ -45,7 +46,10 @@ public static  class AppExtensions
                                                 TContext context,
                                                 IServiceProvider services) where TContext : DbContext
     {
-       context.Database.Migrate();
-       seeder(context,services);
+        if (context.Database.GetPendingMigrations().Count() > 0)
+        {
+            context.Database.Migrate();
+        }
+        seeder(context,services);
     }
 }
