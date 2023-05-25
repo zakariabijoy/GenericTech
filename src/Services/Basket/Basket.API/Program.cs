@@ -1,4 +1,5 @@
 using Basket.API.GrpcServices;
+using Basket.API.Mapper;
 using Basket.API.Repositories;
 using Discount.Grpc.Protos;
 using MassTransit;
@@ -28,6 +29,9 @@ builder.Services.AddMassTransit(config =>
         cfg.Host(builder.Configuration.GetValue<string>("EventBusSettings:HostAddress"));
     });
 });
+
+//AutoMapper Configuration
+builder.Services.AddAutoMapper(typeof(BasketProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
