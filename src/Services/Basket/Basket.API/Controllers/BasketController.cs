@@ -3,6 +3,7 @@ using Basket.API.Entities;
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using EventBus.Messages.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -16,12 +17,14 @@ public class BasketController : ControllerBase
     private readonly IBasketRepository _basketRepository;
     private readonly DiscountGrpcService _discountGrpcService;
     private readonly IMapper _mapper;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public BasketController(IBasketRepository basketRepository, DiscountGrpcService discountGrpcService, IMapper mapper)
+    public BasketController(IBasketRepository basketRepository, DiscountGrpcService discountGrpcService, IMapper mapper, IPublishEndpoint publishEndpoint)
     {
         _basketRepository = basketRepository;
         _discountGrpcService = discountGrpcService;
         _mapper = mapper;
+        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet("{userName}", Name ="GetBasket")]
@@ -32,13 +35,16 @@ public class BasketController : ControllerBase
     [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
     public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
     {
-        //TODO: Communicate with Discount.Grpc
+        //TODO:
+        //1. Communicate with Discount.Grpc
         //and Calculate latest prices of product into shopping cart.
         
         foreach (var item in basket.Items)
         {
-            //consume Discount Grpc
+            //1. consume Discount Grpc
             var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
+
+            //2. Calculate latest prices of product into shopping cart.
             item.Price -= coupon.Amount;
 
         }
@@ -61,25 +67,26 @@ public class BasketController : ControllerBase
     public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
     {
         //ToDo:
-        // get existing basket with total price
-        // create basketCheckoutEvent -- set TotalPrice on basketcheckout eventMessage
-        // send checkout event to rbbitmq
-        // remove the basket     
+        // 1. get existing basket with total price
+        // 2. create basketCheckoutEvent -- set TotalPrice on basketcheckout eventMessage
+        // 3. send checkout event to rbbitmq
+        // 4. remove the basket     
 
-        // get existing basket with total price
+        // 1. get existing basket with total price
         var basket = await _basketRepository.GetBasket(basketCheckout.UserName);
         if(basket is null)
         {
             return BadRequest();
         }
 
-        // create basketCheckoutEvent -- set TotalPrice on basketcheckout eventMessage
+        // 2. create basketCheckoutEventMessage & set TotalPrice on basketcheckout eventMessage
         var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
+        eventMessage.TotalPrice = basket.TotalPrice;
 
-        // send checkout event to rbbitmq
-        // _eventBus.PublishBasketCheckout
+        // 3. send checkout event to rbbitmq
+        await _publishEndpoint.Publish(eventMessage); 
 
-        // remove the basket     
+        // 4. remove the basket     
         await _basketRepository.DeleteBasket(basket.UserName);
 
         return Accepted();
