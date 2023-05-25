@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace EventBus.Messages.Events;
+﻿namespace EventBus.Messages.Events;
 
 public class BasketCheckoutEvent : IntegrationBaseEvent
 {
