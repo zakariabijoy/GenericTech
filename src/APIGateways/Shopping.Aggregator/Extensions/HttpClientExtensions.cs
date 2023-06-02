@@ -9,7 +9,8 @@ public static class HttpClientExtensions
         if (!response.IsSuccessStatusCode)
             throw new ApplicationException($"Something went wrong calling the API: {response.ReasonPhrase}");
 
-        var result =  await response!.Content!.ReadFromJsonAsync<T>().ConfigureAwait(false);
+        var result = await response!.Content!
+                                    .ReadFromJsonAsync<T>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         return result!;
     }
 }
