@@ -4,7 +4,7 @@ using Shopping.Aggregator.Services;
 
 namespace Shopping.Aggregator.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class ShoppingController : ControllerBase
 {
