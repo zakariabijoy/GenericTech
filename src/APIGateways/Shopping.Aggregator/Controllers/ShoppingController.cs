@@ -19,7 +19,7 @@ public class ShoppingController : ControllerBase
         _orderService = orderService;
     }
 
-    [HttpGet("{userName:string}", Name = "GetShopping")]
+    [HttpGet("{userName}", Name = "GetShopping")]
     [ProducesResponseType(typeof(ShoppingDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<ShoppingDto>> GetShopping(string userName)
     {
