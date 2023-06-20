@@ -64,12 +64,19 @@ services:
       context: .
       dockerfile: APIGateways/Shopping.Aggregator/Dockerfile
 
+  generictech.aspnetcorewebapp:
+    image: ${DOCKER_REGISTRY-}generictechaspnetcorewebapp
+    build:
+      context: .
+      dockerfile: WebApps/GenericTech.ASPNETCoreWebApp/Dockerfile
+
 volumes:
   mongo_data:
   portainer_data:
   postgres_data:
   pgadmin_data:
         
+
 
 
 
