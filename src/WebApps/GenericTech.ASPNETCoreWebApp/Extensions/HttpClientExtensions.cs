@@ -1,0 +1,35 @@
+﻿using System.Net.Http.Headers;
+using System.Text.Json;
+
+namespace GenericTech.ASPNETCoreWebApp.Extensions;
+
+public static class HttpClientExtensions
+{
+    public static async Task<T> ReadcontentAs<T>(this HttpResponseMessage response)
+    {
+        if (!response.IsSuccessStatusCode)
+            throw new ApplicationException($"Something went wrong calling the API: {response.ReasonPhrase}");
+
+        var result = await response!.Content!
+                                    .ReadFromJsonAsync<T>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        return result!;
+    }
+
+    public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
+    {
+        var dataAsString = JsonSerializer.Serialize(data);
+        var content = new StringContent(dataAsString);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        return httpClient.PostAsync(url, content);
+    }
+
+    public static Task<HttpResponseMessage> PutAsJson<T>(this HttpClient httpClient, string url, T data)
+    {
+        var dataAsString = JsonSerializer.Serialize(data);
+        var content = new StringContent(dataAsString);
+        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        return httpClient.PutAsync(url, content);
+    }
+}

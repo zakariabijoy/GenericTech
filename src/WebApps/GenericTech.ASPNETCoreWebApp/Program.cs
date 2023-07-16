@@ -1,6 +1,20 @@
-var builder = WebApplication.CreateBuilder(args);
+using GenericTech.ASPNETCoreWebApp.Services;
+using GenericTech.ASPNETCoreWebApp.Services.Interfaces;
 
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 // Add services to the container.
+
+//Configure Typed Clients with IHttpClientFactory
+builder.Services.AddHttpClient<ICatalogService, CatalogService>(c =>
+                c.BaseAddress = new Uri(configuration["APISettings:GatewayAddress"]));
+
+builder.Services.AddHttpClient<IBasketService, BasketService>(c =>
+    c.BaseAddress = new Uri(configuration["APISettings:GatewayAddress"]));
+
+builder.Services.AddHttpClient<IOrderService, OrderService>(c =>
+    c.BaseAddress = new Uri(configuration["APISettings:GatewayAddress"]));
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
