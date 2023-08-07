@@ -148,12 +148,15 @@ services:
 
 
   generictech.aspnetcorewebapp:
+    container_name: generictech.aspnetcorewebapp
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - "APISettings:GatewayAddress=http://ocelotapigw"
+    depends_on:
+      - ocelotapigw
+      - catalog.api
+      - basket.api
+      - discount.api
+      - ordering.api
     ports:
-      - "80"
-      - "443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - "8006:80"
