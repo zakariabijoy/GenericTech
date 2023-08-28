@@ -70,11 +70,18 @@ services:
       context: .
       dockerfile: WebApps/GenericTech.ASPNETCoreWebApp/Dockerfile
 
+  elasticsearchgenerictech:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+
+  kibanagenerictech:
+    image: docker.elastic.co/kibana/kibana:7.9.2
+
 volumes:
   mongo_data:
   portainer_data:
   postgres_data:
   pgadmin_data:
+  elasticsearchgenerictech-data:
         
 
 

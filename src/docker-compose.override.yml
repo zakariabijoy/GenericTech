@@ -160,3 +160,26 @@ services:
       - ordering.api
     ports:
       - "8006:80"
+
+  elasticsearchgenerictech:
+    container_name: elasticsearchgenerictech
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"  
+    volumes:
+      - elasticsearchgenerictech-data:/usr/share/elasticsearch/data
+
+  kibanagenerictech:
+    container_name: kibanagenerictech
+    environment:
+      - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
+    depends_on:
+      - elasticsearchgenerictech
+    ports:
+      - "5601:5601"
+
