@@ -1,3 +1,4 @@
+using Common.Logging;
 using GenericTech.ASPNETCoreWebApp.Services;
 using GenericTech.ASPNETCoreWebApp.Services.Interfaces;
 using Serilog;
@@ -8,23 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 //serilog configuration
-builder.Host.UseSerilog((context, configuration) =>
-{
-    configuration
-        .Enrich.FromLogContext()
-        .Enrich.WithMachineName()
-        .WriteTo.Console()
-        .WriteTo.Elasticsearch(
-            new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticConfiguration:Uri"]))
-            {
-                IndexFormat = $"applogs-{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".","-")}-{context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".","-")}-logs-{DateTime.UtcNow:yyy-MM}",
-                AutoRegisterTemplate = true,
-                NumberOfShards = 2,
-                NumberOfReplicas = 1,
-            })
-        .Enrich.WithProperty("Environemtn", context.HostingEnvironment.EnvironmentName)
-        .ReadFrom.Configuration(context.Configuration);
-});
+builder.Host.UseSerilog(SeriLogger.Configure);
+
 // Add services to the container.
 
 //Configure Typed Clients with IHttpClientFactory
