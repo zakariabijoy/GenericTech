@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["WebApps/GenericTech.ASPNETCoreWebApp/GenericTech.ASPNETCoreWebApp.csproj", "WebApps/GenericTech.ASPNETCoreWebApp/"]
+COPY ["BuidlingBlocks/Common.Logging/Common.Logging.csproj", "BuidlingBlocks/Common.Logging/"]
 RUN dotnet restore "WebApps/GenericTech.ASPNETCoreWebApp/GenericTech.ASPNETCoreWebApp.csproj"
 COPY . .
 WORKDIR "/src/WebApps/GenericTech.ASPNETCoreWebApp"

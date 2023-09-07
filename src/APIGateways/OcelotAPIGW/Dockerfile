@@ -7,6 +7,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["APIGateways/OcelotAPIGW/OcelotAPIGW.csproj", "APIGateways/OcelotAPIGW/"]
+COPY ["BuidlingBlocks/Common.Logging/Common.Logging.csproj", "BuidlingBlocks/Common.Logging/"]
 RUN dotnet restore "APIGateways/OcelotAPIGW/OcelotAPIGW.csproj"
 COPY . .
 WORKDIR "/src/APIGateways/OcelotAPIGW"
