@@ -1,8 +1,13 @@
+using Common.Logging;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//serilog configuration
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
