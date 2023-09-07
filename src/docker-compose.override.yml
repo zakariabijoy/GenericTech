@@ -69,6 +69,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=mongodb://catalogdb:27017"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - catalogdb
     ports:
@@ -81,6 +82,7 @@ services:
       - "CacheSettings:ConnectionString=basketdb:6379"
       - "GrpcSettings:DiscountUrl=http://discount.grpc"
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmqgenerictech:5672"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - basketdb
       - rabbitmqgenerictech 
@@ -92,6 +94,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - discountdb
     ports:
@@ -103,6 +106,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=admin1234;"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - discountdb
     ports:
@@ -113,7 +117,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:OrderingConnectionString=Server=orderdb; Database=OrderDb; User Id=sa; Password=Admin@12345678;"
-      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmqgenerictech:5672" 
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmqgenerictech:5672"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - orderdb
       - rabbitmqgenerictech 
@@ -124,6 +129,7 @@ services:
     container_name: ocelotapigw
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - catalog.api
       - basket.api
@@ -139,6 +145,7 @@ services:
       - "APISettings:CatalogUrl=http://catalog.api"
       - "APISettings:BasketUrl=http://basket.api"
       - "APISettings:OrderingUrl=http://ordering.api"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - catalog.api
       - basket.api
@@ -152,6 +159,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "APISettings:GatewayAddress=http://ocelotapigw"
+      - "ElasticConfiguration:Uri=http://elasticsearchgenerictech" 
     depends_on:
       - ocelotapigw
       - catalog.api
@@ -177,7 +185,7 @@ services:
   kibanagenerictech:
     container_name: kibanagenerictech
     environment:
-      - ELASTICSEARCH_HOSTS=http://host.docker.internal:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearchgenerictech
     depends_on:
       - elasticsearchgenerictech
     ports:
